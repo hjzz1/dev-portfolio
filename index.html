@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>이희종 포트폴리오</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500;700;800&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  /* Layout: one reading column; each project is a case file — 불편 → 한 것 → 막힘과 다시 시도 → 결과, dates set in mono like a log */
+  :root {
+    --bg: #f5f6f3;
+    --paper: #ffffff;
+    --ink: #1d2320;
+    --sub: #5d6661;
+    --line: #dfe3dd;
+    --accent: #2f6f4a;      /* 쑥·말차 green */
+    --accent-soft: #e4efe7;
+    --glaze: #c2416b;        /* glaze pink, used sparingly */
+    --glaze-soft: #fbe9ef;
+    --display: "Gothic A1", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    --body: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141816; --paper: #1b201d; --ink: #e8ece9; --sub: #a3aca6; --line: #2e3531;
+      --accent: #7cc49a; --accent-soft: #1f3328; --glaze: #ef8fae; --glaze-soft: #3a2029;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141816; --paper: #1b201d; --ink: #e8ece9; --sub: #a3aca6; --line: #2e3531;
+    --accent: #7cc49a; --accent-soft: #1f3328; --glaze: #ef8fae; --glaze-soft: #3a2029;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0;
+    background: var(--bg); color: var(--ink);
+    font-family: var(--body); font-size: 16px; line-height: 1.75;
+    word-break: keep-all; overflow-wrap: anywhere;
+  }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+  .wrap {
+    max-width: 920px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  a { color: var(--accent); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  nav.top {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(6px); border-bottom: 1px solid var(--line);
+  }
+  nav.top .wrap { display: flex; gap: 4px 18px; align-items: center; flex-wrap: wrap; padding-block: 10px; }
+  nav.top b { font-family: var(--display); font-weight: 800; margin-right: auto; }
+  nav.top a { color: var(--sub); text-decoration: none; font-size: 14px; }
+  nav.top a:hover { color: var(--ink); }
+
+  header.hero { padding-block: 64px 40px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--accent); text-transform: uppercase; }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.3; }
+  h1 { font-size: clamp(34px, 7vw, 56px); font-weight: 800; margin: 10px 0 8px; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(26px, 4.5vw, 36px); font-weight: 800; margin: 6px 0 12px; letter-spacing: -0.01em; }
+  h3 { font-size: 19px; font-weight: 700; margin: 36px 0 10px; }
+  .who { color: var(--sub); margin: 0 0 22px; }
+  .thesis { font-size: 19px; max-width: 34em; margin: 0; }
+
+  .cases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 36px; }
+  .case {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 18px;
+    display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: inherit;
+  }
+  .case:hover { border-color: var(--accent); }
+  .case .k { font-family: var(--mono); font-size: 12px; color: var(--sub); }
+  .case strong { font-family: var(--display); font-size: 20px; }
+  .case dl { margin: 0; display: grid; gap: 6px; font-size: 14px; }
+  .case dt { font-size: 12px; color: var(--accent); font-weight: 700; }
+  .case dd { margin: 0; }
+
+  .links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 22px; font-size: 14px; }
+  .links span { color: var(--sub); }
+  .links { align-items: flex-start; }
+  .links .linkwrap { display: inline-flex; flex-direction: column; line-height: 1.4; }
+  .links .linkwrap small { font-size: 12px; color: var(--sub); }
+
+  section.project { padding-block: 64px; border-top: 1px solid var(--line); }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+  .pill { font-size: 13px; padding: 2px 12px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+  .pill.pink { background: var(--glaze-soft); color: var(--glaze); }
+  p { margin: 0 0 14px; max-width: 40em; }
+  blockquote {
+    margin: 18px 0; padding: 14px 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+    font-size: 17px; max-width: 40em;
+  }
+  blockquote cite { display: block; font-style: normal; font-size: 13px; color: var(--sub); margin-top: 6px; }
+
+  figure { margin: 18px 0; }
+  figure img { display: block; max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); cursor: zoom-in; background: var(--paper); }
+  figcaption { font-size: 13.5px; color: var(--sub); margin-top: 8px; }
+  .grid2, .grid3 { display: grid; gap: 14px; align-items: start; }
+  .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid2 figure, .grid3 figure { margin: 0; }
+  .phone img { height: 440px; max-height: none; width: auto; max-width: 100%; object-fit: contain; margin: 0 auto; }
+  .mail img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: top; }
+  .phone figcaption { text-align: center; }
+  .feat img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top; }
+  .feat-group { margin-top: 18px; }
+  .feat-group h4 { font-family: var(--display); font-size: 15px; color: var(--accent); margin: 0 0 10px; }
+  .brief { display: grid; gap: 0; margin: 4px 0 8px; border-top: 1px solid var(--line); }
+  .brief > div { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 12px; padding-block: 12px; border-bottom: 1px solid var(--line); }
+  .brief dt { font-family: var(--display); font-weight: 700; color: var(--accent); font-size: 14px; padding-top: 2px; }
+  .brief dd { margin: 0; }
+  .feat-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .feat-row .feat-group { margin-top: 0; }
+  .feat-row .grid2 { gap: 8px; }
+  .feat-row figcaption { font-size: 12.5px; }
+  @media (max-width: 720px) { .feat-row { grid-template-columns: minmax(0, 1fr); } .feat-row .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  ol.log .mail { max-width: 520px; }
+  .codeshots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 14px 0 8px; }
+  .codeshots figure { margin: 0; }
+  .codeshots img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; }
+  .codeshots figcaption { font-size: 12.5px; }
+  @media (max-width: 720px) { .codeshots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .reviews { max-width: 640px; }
+  .brief > div dt { white-space: nowrap; }
+  .photos img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; max-height: none; }
+  #swell .wide img { aspect-ratio: 21 / 8; }
+  #swell .compare { max-width: 680px; }
+  #swell .grid3 .tall img { aspect-ratio: 4 / 5; }
+  .path { font-family: var(--mono); font-size: 13px; color: var(--accent); margin: -12px 0 22px; }
+  .shots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 18px 0 8px; }
+  .shots figure { margin: 0; }
+  .shots img { width: 100%; aspect-ratio: 9 / 16; object-fit: contain; padding: 6px; }
+  .shots .step { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-right: 6px; }
+
+  .tablebox { overflow-x: auto; margin: 10px 0 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 520px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  th { font-size: 13px; color: var(--sub); font-weight: 500; }
+  td.d, td.n { font-family: var(--mono); font-size: 13.5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td.n { text-align: right; }
+
+  /* timeline: 막힘과 다시 시도 */
+  ol.log { list-style: none; padding: 0; margin: 18px 0; display: grid; gap: 0; }
+  ol.log li { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 16px; padding-block: 16px; border-bottom: 1px solid var(--line); }
+  ol.log .date { font-family: var(--mono); font-size: 13.5px; color: var(--sub); padding-top: 2px; }
+  ol.log .what { font-weight: 700; }
+  ol.log .then { color: var(--sub); }
+  ol.log .then::before { content: "→ "; color: var(--accent); font-weight: 700; }
+  ol.log .stop { color: var(--glaze); font-family: var(--mono); font-size: 12px; margin-right: 6px; }
+  ol.log figure { margin: 12px 0 0; }
+  ol.log .grid2 { margin-top: 12px; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 22px 0; }
+  .stat { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .stat b { display: block; font-family: var(--display); font-size: 26px; color: var(--accent); line-height: 1.2; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 13.5px; color: var(--sub); }
+
+  .reviews { display: grid; gap: 10px; margin: 14px 0; }
+  .reviews figure { margin: 0; }
+
+  /* 전·후 비교: 밀어서 보기 */
+  .compare { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); margin: 18px 0 6px; background: var(--paper); }
+  .compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; border-radius: 0; }
+  .compare .before { clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
+  .compare .bar { position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 3px; margin-left: -1.5px; background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.15); pointer-events: none; }
+  .compare .bar::after { content: "⇆"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 38px; height: 38px; border-radius: 99px; background: #fff; color: #1d2320; display: grid; place-items: center; font-size: 18px; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+  .compare .tag { position: absolute; top: 12px; padding: 2px 12px; border-radius: 99px; background: rgba(20,24,22,.72); color: #fff; font-size: 13px; pointer-events: none; }
+  .compare .tag.l { left: 12px; } .compare .tag.r { right: 12px; }
+  .compare input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+  .compare:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .hint { font-size: 13.5px; color: var(--sub); }
+
+  /* 공사 기록: 가로로 넘기기 */
+  .build { list-style: none; margin: 14px 0 0; padding: 0 0 10px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 30%); gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; }
+  .build li { scroll-snap-align: start; }
+  .build figure { margin: 0; }
+  .build img { aspect-ratio: 3 / 4; width: 100%; object-fit: cover; }
+  .build .step { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-top: 8px; }
+  .wide img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .tall img { aspect-ratio: 3 / 4; width: 100%; object-fit: cover; }
+  .grid3 .tall img { aspect-ratio: 3 / 4; width: 100%; object-fit: cover; }
+
+  footer { padding-block: 48px 72px; border-top: 1px solid var(--line); color: var(--sub); font-size: 14px; }
+
+  /* lightbox */
+  .lb { position: fixed; inset: 0; z-index: 20; background: rgba(10,12,11,.88); display: flex; align-items: center; justify-content: center;
+        padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+  .lb img { max-width: 100%; max-height: 100%; border-radius: 8px; background: #fff; }
+  .lb button { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px));
+               background: #fff; color: #1d2320; border: 0; border-radius: 99px; padding: 6px 14px; font: inherit; font-size: 14px; cursor: pointer; }
+
+  @media (max-width: 720px) {
+    .cases, .grid3, .stats { grid-template-columns: minmax(0, 1fr); }
+    .grid2 { grid-template-columns: minmax(0, 1fr); }
+    .grid2.keep { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    ol.log li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .phone img { height: 360px; }
+    .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  @media print {
+    @page { size: A4; margin: 14mm 12mm; }
+    :root { --bg: #ffffff; --paper: #ffffff; }
+    body { margin: 0; font-size: 12.5px; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    nav.top, .lb, .compare input, .compare .bar, p.hint.slide-hint, footer { display: none !important; }
+    header.hero { padding-block: 0 16px; }
+    section.project { padding-block: 0; border-top: 0; break-before: page; }
+    h2, h3, h4 { break-after: avoid; }
+    figure, .case, .stat, blockquote, tr, ol.log li, .tablebox { break-inside: avoid; }
+    .build { display: grid; grid-auto-flow: row; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: visible; }
+    .build img { aspect-ratio: 3 / 4; }
+    .compare { aspect-ratio: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border: 0; }
+    .compare img { position: static; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+    .compare .before { clip-path: none; order: -1; }
+    .compare .tag { display: none; }
+    .phone img { height: 300px; }
+    .mail img { aspect-ratio: 3 / 2; }
+    .wide img { aspect-ratio: 16 / 7; }
+    .feat img { aspect-ratio: 3 / 4; }
+    .mail img { max-height: 260px; width: auto; max-width: 100%; aspect-ratio: auto; object-fit: contain; }
+    .shots img { aspect-ratio: 9 / 15; }
+    .links a::after { content: " (" attr(href) ")"; font-size: 10px; color: var(--sub); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="목차">
+  <div class="wrap">
+    <b>이희종</b>
+    <a href="#daengbody">댕바디</a>
+    <a href="#codering">코드링</a>
+    <a href="#swell">스웰커피앤도넛</a>
+    <a href="#next">앞으로</a>
+  </div>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">카카오테크 부트캠프 5기 지원 포트폴리오</div>
+    <h1>가까이 있는 불편부터</h1>
+    <p class="who">이희종</p>
+    <p class="path">무대기계감독 1년 7개월(인턴 포함) · 카페 2년 · 카페 창업 · AI로 서비스 만들기</p>
+    <p class="thesis">가까이에서 마주친 불편을 AI와 함께 직접 풀어 왔습니다. 이제는 AI가 짠 코드를 제가 읽고 판단할 수 있도록 기본기를 쌓고 있습니다.</p>
+
+    <div class="cases">
+      <a class="case" href="#daengbody">
+        <span class="k">2026.8 – 현재</span>
+        <strong>댕바디</strong>
+        <dl>
+          <div><dt>문제</dt><dd>보호자들이 검진표를 종이로 들고 다니다 보니 다시 찾기 어렵고, 수치의 뜻도 금방 잊었습니다.</dd></div>
+          <div><dt>한 일</dt><dd>코딩을 배운 적 없이, AI와 함께 검진표를 읽고 설명해 주는 앱을 만들었습니다.</dd></div>
+          <div><dt>결과</dt><dd>두 번 반려된 뒤 10월 1일 앱스토어에 출시했습니다.</dd></div>
+        </dl>
+      </a>
+      <a class="case" href="#codering">
+        <span class="k">2026.9 – 현재</span>
+        <strong>코드링</strong>
+        <dl>
+          <div><dt>문제</dt><dd>AI가 짠 코드에서 무엇이 틀렸는지 제 눈으로 보지 못했습니다.</dd></div>
+          <div><dt>한 일</dt><dd>제가 첫 사용자인 코딩 학습 사이트를 만들었습니다.</dd></div>
+          <div><dt>결과</dt><dd>하루 4시간 이상 공부해 계획보다 1주 앞서 있습니다.</dd></div>
+        </dl>
+      </a>
+      <a class="case" href="#swell">
+        <span class="k">2025.9 – 2026.10</span>
+        <strong>스웰커피앤도넛</strong>
+        <dl>
+          <div><dt>문제</dt><dd>문을 연 뒤 석 달 동안 월 매출이 약 950만 원에서 움직이지 않았습니다.</dd></div>
+          <div><dt>한 일</dt><dd>가게를 알리는 게 먼저라고 보고, 사람들이 찾아올 만한 트렌드한 디저트를 냈습니다.</dd></div>
+          <div><dt>결과</dt><dd>2026년 2월 월 매출이 2,466만 원, 출시 전의 약 2.6배가 됐습니다.</dd></div>
+        </dl>
+      </a>
+    </div>
+
+    <div class="links">
+      <span>링크</span>
+      <a href="https://daengbody.com">daengbody.com</a>
+      <a href="https://apps.apple.com/app/id6815108181">댕바디 App Store</a>
+      <span class="linkwrap"><a href="https://saju-care.com">코드링 (saju-care.com)</a><small>처음 만든 사주 사이트 주소를 독학용으로 다시 썼습니다</small></span>
+      <a href="https://github.com/hjzz1/js-study">공부 기록 (GitHub)</a>
+    </div>
+  </div>
+</header>
+
+<!-- 댕바디 -->
+<section class="project" id="daengbody">
+  <div class="wrap">
+    <div class="eyebrow">Project 1</div>
+    <h2>댕바디 — 보호자의 검진표를 읽기 쉽게</h2>
+    <div class="meta"><span class="pill">2026.8 – 현재</span><span class="pill">iOS 출시</span><span class="pill">구글 플레이 출시</span></div>
+
+    <dl class="brief">
+      <div><dt>문제</dt><dd>단골 보호자들은 1년에 한두 번 받는 검진표를 종이로 들고 다녀 다시 찾기 어려웠고, 병원에서 들은 설명도 금방 잊었습니다. 접종 내역과 몸무게 기록도 흩어져 있었습니다.</dd></div>
+      <div><dt>한 일</dt><dd>코딩을 배운 적 없이 바이브코딩 강의를 듣고 AI와 함께 만들었습니다. 검진표를 AI가 읽어 기록하고 쉬운 말로 설명하며, 쌓인 기록은 그래프와 병원용 리포트로 정리합니다.</dd></div>
+      <div><dt>결과</dt><dd>앱스토어에서 두 번 반려된 뒤 10월 1일 출시했습니다. 노견을 키우는 보호자에게서 관리가 수월해졌다는 후기를 받았습니다.</dd></div>
+      <div><dt>배운 점</dt><dd>만드는 것만큼 사람들이 직접 써 보고 말해 주는 과정이 중요하다는 것을 배웠습니다.</dd></div>
+    </dl>
+
+    <h3>핵심 흐름</h3>
+    <div class="shots">
+      <figure><img src="img/daengbody-checkup-1-upload.png" alt="검진표 PDF를 올리는 화면" loading="lazy"><figcaption><span class="step">1</span>검진표 올리기</figcaption></figure>
+      <figure><img src="img/daengbody-checkup-2-read.png" alt="AI가 읽은 검진 수치 기록 화면" loading="lazy"><figcaption><span class="step">2</span>AI가 64개 값을 읽어 기록</figcaption></figure>
+      <figure><img src="img/daengbody-checkup-3-explain.png" alt="확인할 점을 쉬운 말로 설명하는 화면" loading="lazy"><figcaption><span class="step">3</span>확인할 점을 쉬운 말로 설명</figcaption></figure>
+      <figure><img src="img/daengbody-weight-graph.png" alt="몸무게 기록이 그래프로 이어지는 화면" loading="lazy"><figcaption><span class="step">4</span>쌓인 기록을 그래프로</figcaption></figure>
+    </div>
+    <p class="hint">1~3번은 뽀슬이의 실제 검진표(2026.05.23) 화면입니다. 3번은 첫 체험 화면이라 ‘체험 미리보기’ 표시가 있습니다.</p>
+
+    <h3>주요 기능</h3>
+    <div class="feat-row">
+    <div class="feat-group">
+      <h4>기록할 때</h4>
+      <div class="grid2">
+        <figure class="feat"><img src="img/daengbody-feature-checkup-add-dental.jpg" alt="건강검진 추가 화면, 치아 차트" loading="lazy"><figcaption>검진표 자동 채우기와 치아 차트</figcaption></figure>
+        <figure class="feat"><img src="img/daengbody-feature-hospital-visit.jpg" alt="병원 방문 기록 화면" loading="lazy"><figcaption>병원 방문 기록</figcaption></figure>
+      </div>
+    </div>
+    <div class="feat-group">
+      <h4>기록이 쌓이면</h4>
+      <div class="grid2">
+        <figure class="feat"><img src="img/daengbody-feature-monthly-report.jpg" alt="월간 건강 리포트 화면" loading="lazy"><figcaption>AI 월간 건강 리포트</figcaption></figure>
+        <figure class="feat"><img src="img/daengbody-feature-monthly-analysis.jpg" alt="상세 건강 분석 화면" loading="lazy"><figcaption>상세 건강 분석</figcaption></figure>
+      </div>
+    </div>
+    <div class="feat-group">
+      <h4>병원에 갈 때</h4>
+      <div class="grid2">
+        <figure class="feat"><img src="img/daengbody-feature-hospital-prep.jpg" alt="병원 방문 준비 화면" loading="lazy"><figcaption>병원 방문 준비 — 과별로 정상범위를 벗어난 값만 표시</figcaption></figure>
+        <figure class="feat"><img src="img/daengbody-feature-hospital-report.jpg" alt="병원용 건강 리포트 화면" loading="lazy"><figcaption>병원용 리포트 — PDF·이미지로 저장</figcaption></figure>
+      </div>
+    </div>
+
+    </div>
+
+    <h3>막히고 다시 한 과정</h3>
+    <ol class="log">
+      <li><span class="date">8/28</span><div><div class="what">개발을 시작했습니다.</div></div></li>
+      <li><span class="date">9월 말</span><div><div class="what"><span class="stop">반려</span>앱스토어 1차 반려: 권한 설명에 기본 문구가 남아 있었습니다.</div><div class="then">실제 용도를 적고 쓰지 않는 마이크 권한을 지웠습니다.</div></div></li>
+      <li><span class="date">9/25</span><div><div class="what"><span class="stop">반려</span>2차 반려: 앱 안에서 Apple 로그인이 끝나지 않았습니다.</div><div class="then">로그인 방식을 바꿔 9월 29일 다시 냈습니다.</div>
+        <figure class="mail"><img src="img/appstore-rejected-2-0925.png" alt="9월 25일 앱스토어 2차 반려 메시지" loading="lazy"><figcaption>9/25 두 번째 반려</figcaption></figure></div></li>
+      <li><span class="date">10/1</span><div><div class="what">승인을 받아 iOS로 출시했습니다.</div>
+        <figure class="mail"><img src="img/appstore-2-approved-1.0-1001-masked.png" alt="10월 1일 앱스토어 승인 메일" loading="lazy"><figcaption>10/1 승인 메일</figcaption></figure></div></li>
+      <li><span class="date">10월 초</span><div><div class="what">출시 직후 두 가지를 더 고쳤습니다.</div><div class="then">아이폰 로그인 오류는 AI에게 고쳐 달라고 해 하루 만에 해결했습니다.</div><div class="then">지인이 화면 위쪽 여백이 너무 크다고 해서 고쳐 10월 3일 업데이트했습니다.</div>
+        <div class="grid3">
+          <figure class="phone"><img src="img/login-bug-2-back-to-login.jpg" alt="로그인 뒤 다시 로그인 화면으로 돌아간 화면" loading="lazy"><figcaption>로그인 오류</figcaption></figure>
+          <figure class="phone"><img src="img/daengbody-margin-before-1002.jpg" alt="여백 수정 전 화면" loading="lazy"><figcaption>여백 고치기 전</figcaption></figure>
+          <figure class="phone"><img src="img/daengbody-margin-after-1004.jpg" alt="여백 수정 후 화면" loading="lazy"><figcaption>여백 고친 뒤</figcaption></figure>
+        </div></div></li>
+      <li><span class="date">10/25</span><div><div class="what"><span class="stop">거부</span>구글 플레이 출시 거부: 테스터가 실제로 쓰지 않았습니다.</div><div class="then">같은 날 지인들과, 서로의 앱을 직접 써 주는 테스터 모임에 부탁해 14일 동안 다시 테스트했습니다.</div>
+        <figure class="mail"><img src="img/googleplay-rejected-1025-masked.png" alt="10월 25일 구글 플레이 거부 메일" loading="lazy"><figcaption>10/25 구글 플레이 메일</figcaption></figure></div></li>
+      <li><span class="date">11/10</span><div><div class="what">구글 플레이에 출시했습니다.</div></div></li>
+    </ol>
+
+    <h3>사용자 후기</h3>
+    <figure class="phone"><img src="img/daengbody-review-kakao.png" alt="댕바디 사용자 카카오톡 후기" loading="lazy"><figcaption>노견을 키우는 보호자가 보내 준 후기</figcaption></figure>
+    <p class="hint">커밋 108개 · 기능 모듈 21개 · 자동 테스트 357개</p>
+  </div>
+</section>
+
+<!-- 코드링 -->
+<section class="project" id="codering">
+  <div class="wrap">
+    <div class="eyebrow">Project 2</div>
+    <h2>코드링 — 제 공부의 불편을 푸는 학습 사이트</h2>
+    <div class="meta"><span class="pill">2026.9 – 현재</span><span class="pill">독학용</span></div>
+
+    <dl class="brief">
+      <div><dt>문제</dt><dd>댕바디는 AI에게 묻고 결과를 확인하며 만들었습니다. 무엇이 틀렸는지 제 눈으로 보지 못하는 게 가장 큰 한계였습니다.</dd></div>
+      <div><dt>한 일</dt><dd>공부하려고 자바스크립트 학습 사이트를 직접 만들었습니다. 배운 것만으로 문제를 내게 하고, 틀렸던 문제는 오늘의 복습으로 다시 나오게 했습니다.</dd></div>
+      <div><dt>결과</dt><dd>10월 13일부터 하루 4시간 이상 공부해 계획보다 1주 앞섰고, 수업 4개와 코딩테스트 2단계를 마쳤습니다. 아직 혼자 오류를 고칠 수준은 아닙니다.</dd></div>
+      <div><dt>배운 점</dt><dd>AI가 고친 코드를 그대로 받지 않고 “고치는 게 먼저가 아니라 날 이해시키는 게 먼저”라고 요구하게 됐습니다.</dd></div>
+    </dl>
+
+    <div class="stats">
+      <div class="stat"><b>4시간+</b><span>10/13부터 하루 공부 시간</span></div>
+      <div class="stat"><b>수업 4개</b><span>코딩테스트 2단계까지 완료</span></div>
+      <div class="stat"><b>3건</b><span>공부하다 찾아낸 채점 오류</span></div>
+    </div>
+
+    <h3>공부하다 찾아낸 채점 오류</h3>
+    <p>틀렸다고 생각한 답이 정답으로 나오면 AI에게 “이렇게 해도 맞는데 원하는 답이 맞냐”고 묻고, 채점을 고치게 했습니다.</p>
+    <div class="tablebox"><table>
+      <tr><th style="width:55%">찾은 문제</th><th>AI에게 고치게 한 것</th></tr>
+      <tr><td>출력만 바꿔도 통과됨</td><td>채점 방식 변경</td></tr>
+      <tr><td>틀린 조건문도 정답 처리 (값 하나로만 검사)</td><td>“다른 값으로 한 번 더” 검사</td></tr>
+      <tr><td>주사위 문제에서 두 값이 같은 경우를 놓친 코드도 통과</td><td>그 실수를 잡는 검사 추가</td></tr>
+    </table></div>
+
+    <h3>화면</h3>
+    <div class="codeshots">
+      <figure><img src="img/codering-1-home.png" alt="코드링 홈, 8주 계획" loading="lazy"><figcaption>8주 계획 — “계획보다 1주 앞서 있어요”</figcaption></figure>
+      <figure><img src="img/codering-progress-1028.png" alt="코드링 진도 화면" loading="lazy"><figcaption>진도 — 수업 4개, 코딩테스트 2단계 완료</figcaption></figure>
+      <figure><img src="img/codering-2-problem.png" alt="문제 풀이 화면" loading="lazy"><figcaption>바로 실행하고 채점하는 문제</figcaption></figure>
+      <figure><img src="img/codering-3-review.png" alt="오늘의 복습 화면" loading="lazy"><figcaption>틀렸던 문제부터 다시 나오는 오늘의 복습</figcaption></figure>
+    </div>
+    <p class="hint">자바스크립트·HTML/CSS 수업 31개 · 문제 281개 · 자동 테스트 3,149개</p>
+  </div>
+</section>
+
+<!-- 카페 -->
+<section class="project" id="swell">
+  <div class="wrap">
+    <div class="eyebrow">Experience</div>
+    <h2>스웰커피앤도넛 — 멈춘 매출을 메뉴로 움직이다</h2>
+    <div class="meta"><span class="pill">동업 창업</span><span class="pill">2025.9 – 2026.10</span><span class="pill">셀프 인테리어</span></div>
+
+    <dl class="brief">
+      <div><dt>문제</dt><dd>개업 후 석 달 동안 월 매출이 약 950만 원에서 멈췄습니다. 배달 비중을 14%에서 38%까지 늘려도 주문 수는 그대로였습니다.</dd></div>
+      <div><dt>원인</dt><dd>개업 직후 외벽 공사로 가게가 가림막에 가려, “가게 생긴 줄 몰랐다”는 손님이 많았습니다.</dd></div>
+      <div><dt>한 일</dt><dd>트렌드한 디저트인 두바이쫀득쿠키를 일주일 안에 출시했습니다. 가림막에는 ‘정상 영업중’ 현수막을 걸고, 창문에는 쫀득쿠키 안내를 붙였습니다.</dd></div>
+      <div><dt>결과</dt><dd>2026년 2월 월 매출 2,466만 원으로 출시 전의 약 2.6배가 됐고, 월 주문은 1,541건으로 늘었습니다.</dd></div>
+      <div><dt>배운 점</dt><dd>원인을 모른 채 배달처럼 방법만 더했을 때는 주문이 그대로였고, 가게가 보이지 않는다는 원인을 찾아 알리자 매출이 움직였습니다. 방법보다 원인을 먼저 짚어야 한다는 것을 배웠습니다.</dd></div>
+    </dl>
+
+    <h3>외벽 공사와 홍보</h3>
+    <div class="grid3">
+      <figure class="tall"><img src="img/cafe-wall-construction-49.jpg" alt="가림막으로 덮인 가게 건물 정면" loading="lazy"><figcaption>오픈 직후 시작된 외벽 공사 — 가게 정면</figcaption></figure>
+      <figure class="tall"><img src="img/cafe-wall-construction-46.jpg" alt="길에서 본 가림막에 덮인 건물" loading="lazy"><figcaption>길에서 보면 가게가 가림막 아래에 묻혀 보였습니다</figcaption></figure>
+      <figure class="tall"><img src="img/cafe-banner-open.jpg" alt="가림막에 건 정상 영업중 현수막" loading="lazy"><figcaption>가림막에 ‘정상 영업중’ 현수막을 걸어 가게를 알렸습니다</figcaption></figure>
+    </div>
+    <div class="grid2 photos">
+      <figure><img src="img/cafe-cookie-tray.jpg" alt="직접 만든 두바이쫀득쿠키" loading="lazy"><figcaption>직접 만든 두바이쫀득쿠키</figcaption></figure>
+      <figure><img src="img/cafe-donuts-box-1.jpg" alt="상자에 담긴 도넛" loading="lazy"><figcaption>함께 팔던 도넛</figcaption></figure>
+    </div>
+
+    <h3>매출 변화</h3>
+    <div class="tablebox"><table>
+      <tr><th>월</th><th style="text-align:right">실매출 (포스 영수증)</th><th>비고</th></tr>
+      <tr><td class="d">2025.9</td><td class="n">9,542,820원</td><td>출시 전</td></tr>
+      <tr><td class="d">2025.10</td><td class="n">9,423,600원</td><td>출시 전</td></tr>
+      <tr><td class="d">2025.11</td><td class="n">9,667,565원</td><td>출시 전</td></tr>
+      <tr><td class="d">2025.12</td><td class="n">18,506,145원</td><td>12월 초 쿠키 출시</td></tr>
+      <tr><td class="d">2026.1</td><td class="n">23,645,530원</td><td></td></tr>
+      <tr><td class="d">2026.2</td><td class="n">24,663,434원</td><td>출시 전 평균의 약 2.6배</td></tr>
+    </table></div>
+    <div class="grid2">
+      <figure><img src="img/cafe-review-1206-a.jpg" alt="12월 6일 배달 리뷰" loading="lazy"><figcaption>출시 직후(12/6) 리뷰 — 쫀득쿠키와 도넛을 같이 주문했습니다</figcaption></figure>
+      <figure><img src="img/sales-receipts.png" alt="포스 월 정산 영수증" loading="lazy"><figcaption>근거로 남긴 포스 월 정산 영수증 원본</figcaption></figure>
+    </div>
+
+    <h3>메뉴의 단맛을 정하며</h3>
+    <dl class="brief">
+      <div><dt>의견 차이</dt><dd>동업자는 디저트가 좀 달아야 한다고 봤고, 저는 덜 달고 담백해야 자주 찾는 디저트가 된다고 봤습니다.</dd></div>
+      <div><dt>정한 방법</dt><dd>두 가지 필링을 만들어 지인들에게 비교해 보게 했습니다. “필링의 개성이 단맛 때문에 눌리는 것 같다”는 반응을 듣고 필링은 덜 달게, 글레이즈와 초코는 동업자 의견대로 더 진하게 정했습니다.</dd></div>
+    </dl>
+    <figure class="wide"><img src="img/cafe-donuts-box-2.jpg" alt="상자에 담긴 여러 가지 도넛" loading="lazy"><figcaption>스웰의 도넛</figcaption></figure>
+    <div class="reviews">
+      <figure><img src="img/cafe-review-notsweet-1001.png" alt="리뷰: 도넛이 퐁신퐁신하고 너무 달지도 않고 맛있어요" loading="lazy"></figure>
+      <figure><img src="img/cafe-review-notsweet-0903.png" alt="리뷰: 생일케이크 대신 시켜서 먹었어요, 크림도 많이 안 달고" loading="lazy"></figure>
+      <figure><img src="img/cafe-review-daily-0813.png" alt="4회 주문 손님 리뷰: 생각날 때마다 주문해 먹는 도넛입니다" loading="lazy"><figcaption>네 번째 주문한 손님은 “생각날 때마다 주문해 먹는 도넛”이라고 남겼습니다.</figcaption></figure>
+    </div>
+
+    <h3>가게를 직접 만들었습니다</h3>
+    <p>가구와 커피바, 테이블부터 벽지와 페인트까지 직접 했습니다.</p>
+    <div class="compare" id="cmp" style="--pos:50%">
+      <img src="img/cafe-interior-tables.jpg" alt="완성된 홀: 직접 만든 나무 테이블과 의자" loading="lazy">
+      <img class="before" src="img/cafe-before-2-green.jpg" alt="공사 전 홀: 초록 페인트가 남은 빈 벽" loading="lazy">
+      <span class="bar" aria-hidden="true"></span>
+      <span class="tag l">전</span><span class="tag r">후</span>
+      <input type="range" id="cmpRange" min="0" max="100" value="50" aria-label="공사 전과 후 사진 비교, 좌우로 밀기">
+    </div>
+    <p class="hint slide-hint">가운데 막대를 좌우로 밀면 같은 자리의 공사 전과 후를 비교할 수 있습니다.</p>
+    <ol class="build">
+      <li><figure><img src="img/cafe-before-1-empty.jpg" alt="비어 있던 가게 안쪽" loading="lazy"><figcaption><span class="step">시작</span>비어 있던 가게</figcaption></figure></li>
+      <li><figure><img src="img/cafe-mid-1-plan.jpg" alt="노트북에 띄운 도면과 치수를 적은 나무판" loading="lazy"><figcaption><span class="step">도면</span>도면을 띄워 두고 판마다 치수를 적었습니다</figcaption></figure></li>
+      <li><figure><img src="img/cafe-mid-3-frame.jpg" alt="각재로 짠 커피바 골조" loading="lazy"><figcaption><span class="step">골조</span>각재로 커피바 뼈대를 짰습니다</figcaption></figure></li>
+      <li><figure><img src="img/cafe-mid-me-frame.jpg" alt="골조를 맞추고 있는 본인" loading="lazy"><figcaption><span class="step">골조</span>직접 골조를 맞추는 모습</figcaption></figure></li>
+      <li><figure><img src="img/cafe-mid-me-counter.jpg" alt="커피바 앞에서 작업 중인 본인" loading="lazy"><figcaption><span class="step">커피바</span>뼈대 위에 판을 대는 중</figcaption></figure></li>
+      <li><figure><img src="img/cafe-mid-2-partition.jpg" alt="세워 둔 가벽" loading="lazy"><figcaption><span class="step">가벽</span>주방을 나누는 벽을 세웠습니다</figcaption></figure></li>
+      <li><figure><img src="img/cafe-mid-0-counter.jpg" alt="커피바에 올린 나무 상판" loading="lazy"><figcaption><span class="step">상판</span>커피바에 나무 상판을 올렸습니다</figcaption></figure></li>
+      <li><figure><img src="img/cafe-mid-drill.jpg" alt="나무에 나사를 박는 손" loading="lazy"><figcaption><span class="step">가구</span>하나씩 조립했습니다</figcaption></figure></li>
+      <li><figure><img src="img/cafe-mid-4-chairs.jpg" alt="만들고 있는 나무 의자와 테이블" loading="lazy"><figcaption><span class="step">가구</span>의자와 테이블도 직접 만들었습니다</figcaption></figure></li>
+      <li><figure><img src="img/cafe-mid-5-wall.jpg" alt="미장한 벽과 칠한 커피바" loading="lazy"><figcaption><span class="step">마감</span>벽을 마감하고 상판을 칠했습니다</figcaption></figure></li>
+      <li><figure><img src="img/cafe-mid-6-stain-chairs.jpg" alt="칠을 마친 커피바와 뒤쪽의 의자들" loading="lazy"><figcaption><span class="step">마감</span>칠을 마친 커피바와 직접 만든 의자들</figcaption></figure></li>
+      <li><figure><img src="img/cafe-after-window.jpg" alt="완성된 창가 자리" loading="lazy"><figcaption><span class="step">완성</span>완성된 창가 자리</figcaption></figure></li>
+    </ol>
+    <p class="hint slide-hint">옆으로 넘겨 보세요.</p>
+    <div class="grid2 photos">
+      <figure><img src="img/cafe-interior-hall.jpg" alt="완성된 매장 전체" loading="lazy"><figcaption>완성된 매장</figcaption></figure>
+      <figure><img src="img/cafe-interior-window.jpg" alt="창가 바 좌석" loading="lazy"><figcaption>창가 바 좌석</figcaption></figure>
+    </div>
+
+    <h3>동업자에게 배운 것</h3>
+    <p>계획이 틀어지면 스트레스를 받아 일에 제대로 집중하지 못하던 제가, 문제가 생겨도 당황하지 않는 동업자와 하루 평균 12시간을 함께 일하며 상황을 다시 들여다보는 여유를 갖게 됐습니다. 그 여유 덕분에 매출이 멈춘 진짜 원인을 찾을 수 있었습니다.</p>
+  </div>
+</section>
+
+<!-- 앞으로 -->
+<section class="project" id="next">
+  <div class="wrap">
+    <div class="eyebrow">Next</div>
+    <h2>앞으로</h2>
+    <p>댕바디는 단골의 이야기에서, 코드링은 제 공부의 막힘에서 시작했습니다. 둘 다 가까이 있는 불편이 출발점이었습니다.</p>
+    <p>둘 다 AI가 코드를 짜 준 덕분에 만들 수 있었지만, 결과가 틀려도 왜 틀렸는지 제 눈으로 보지 못했습니다. 그래서 10월 13일부터 하루 4시간 이상 자바스크립트를 공부하고 있습니다.</p>
+    <p>이제는 제가 만든 서비스를 직접 이해하고, 고치고, 운영할 수 있는 기본기를 쌓고 싶습니다.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">이희종 · 카카오테크 부트캠프 5기 지원 포트폴리오 · 사진을 누르면 크게 볼 수 있습니다.</div>
+</footer>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="사진 크게 보기">
+  <button type="button" id="lbClose">닫기</button>
+  <img id="lbImg" alt="">
+</div>
+
+<script>
+  const lb = document.getElementById('lb');
+  const lbImg = document.getElementById('lbImg');
+  function closeLb() { lb.hidden = true; lbImg.removeAttribute('src'); }
+  document.querySelectorAll('figure img').forEach(img => {
+    img.addEventListener('click', () => { lbImg.src = img.src; lbImg.alt = img.alt; lb.hidden = false; document.getElementById('lbClose').focus(); });
+  });
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !lb.hidden) closeLb(); });
+
+  const cmp = document.getElementById('cmp');
+  document.getElementById('cmpRange').addEventListener('input', e => { cmp.style.setProperty('--pos', e.target.value + '%'); });
+</script>
+</body>
+</html>
